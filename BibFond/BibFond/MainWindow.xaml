@@ -1,0 +1,111 @@
+﻿<Window x:Class="BibFond.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BibFond"
+        mc:Ignorable="d"
+        Title="MainWindow" Width="1280" Height="720"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="Transparent">
+
+    <Window.Resources>
+        <DataTemplate x:Key="listMain">
+            <StackPanel Margin="10,5,10,0">
+                <Image Width="150" Height="150" Source="{Binding Path=image}"/>
+                <TextBlock Margin="0,0,0,0" Width="120" FontSize="13" TextAlignment="Center" TextWrapping="Wrap" Foreground="White" Text="{Binding Path=name}"/>
+                <TextBlock Margin="0,0,0,0" Width="120" FontSize="13" TextAlignment="Center" TextWrapping="NoWrap" Foreground="White" Text="{Binding Path=genres}"/>
+             </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid">
+        <Grid.Background>
+            <ImageBrush ImageSource="/images/auregfon.jpg"/>
+        </Grid.Background>
+        <Grid MaxWidth="1200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="BibiFond" Style="{StaticResource SmallLogo}"/>
+                <TextBlock x:Name="myBooksList" Text="Мои книги" Cursor="Cross" Grid.Column="0"
+                           Style="{StaticResource SmallLogo}" Foreground="AliceBlue" Margin="110, 0, 0, 0" 
+                           MouseDown="myBooksList_MouseDown"/>
+                <StackPanel x:Name="UserStackPanel" Grid.Column="2" Orientation="Horizontal" 
+                            Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <TextBlock x:Name="NameUser" Grid.Column="0" Text="Lorem" Style="{StaticResource Text}"
+                               Margin="0, 0, 20, 0"/>
+                    <Rectangle Height="20" Width="1" Fill="#fafafa" Margin="0, 0, 20, 0"/>
+                    <Button x:Name="AdminPanelButton" Cursor="Hand" Visibility="Collapsed" 
+                            Content="Панель администратора" Style="{StaticResource HeadLink}" 
+                            Foreground="#F7D7AE" Margin="0, 0, 20, 0" Click="AdminPanel_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <Rectangle Grid.Row="1" Height="1" Fill="#fafafa" Margin="0, 10 0, 10"></Rectangle>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="354*"/>
+                    <ColumnDefinition Width="460"/>
+                </Grid.ColumnDefinitions>
+                <ListBox Grid.Row="0" x:Name="booksList" ItemTemplate="{StaticResource ResourceKey=listMain}"
+                 Background="Transparent"
+                 BorderBrush="Transparent"
+                 SelectionChanged="booksList_SelectionChanged"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+                <StackPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch">
+                    
+                    <DockPanel>
+                        <Label Content="Название" Style="{StaticResource SmallLogo}" Foreground="Aqua" FontSize="20" Margin="5,0,0,0"/>
+                        <Label FontSize="20" x:Name="RecordTextBookName" Style="{StaticResource SmallLogo}"  Foreground="White"
+                    Height="35" Margin="10,0,20,0"/>
+                    </DockPanel>
+                    
+                    <DockPanel>
+                        <Label Content="Автор" Style="{StaticResource SmallLogo}" FontSize="20" Margin="5,0,0,0"  Foreground="Aqua"/>
+                        <Label x:Name="AuthorComboBox"  FontSize="20" Style="{StaticResource SmallLogo}"   Foreground="White"          
+                 Height="35" Width="auto" Margin="10,0,20,0"/>
+                    </DockPanel>
+                    
+                    <DockPanel>
+                        <Label Content="Издательство" Style="{StaticResource SmallLogo}" FontSize="20" Margin="5,0,0,0"  Foreground="Aqua"/>
+                        <Label x:Name="PubComboBox"  FontSize="20"  Style="{StaticResource SmallLogo}"   Foreground="White"       
+                    Height="35" Width="auto" Margin="10,0,20,0"/>
+                    </DockPanel>
+                    
+                    <DockPanel>
+                        <Label Content="Жанр" Style="{StaticResource SmallLogo}" FontSize="20" Margin="5,0,0,0"  Foreground="Aqua"/>
+                        <Label x:Name="RecordTextGenres" FontSize="20"  Style="{StaticResource SmallLogo}"   Foreground="White"        
+                        Height="35" Margin="10,0,20,0"/>
+                    </DockPanel>
+                    
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                        <Button x:Name="AddCommit" Content="Добавить себе" 
+                    Style="{StaticResource AdminButton}" Margin="0, 5, 20, 0" Click="AddCommit_Click"/>
+                        <Button x:Name="AddRollback" Content="Отменить" 
+                    Style="{StaticResource AdminButton}" Margin="0, 5, 0, 0" Click="AddRollback_Click"/>
+                    </StackPanel>
+                    
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

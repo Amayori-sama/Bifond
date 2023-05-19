@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BibFondModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="BibFondEntities" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(BibFondModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(BibFondModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="author" EntityType="BibFondModel.author" />
+    <EntitySet Name="Book" EntityType="BibFondModel.Book" />
+    <EntitySet Name="data_USERS" EntityType="BibFondModel.data_USERS" />
+    <EntitySet Name="GENRE" EntityType="BibFondModel.GENRE" />
+    <EntitySet Name="ImageSource" EntityType="BibFondModel.ImageSource" />
+    <EntitySet Name="list_OF_BOOK" EntityType="BibFondModel.list_OF_BOOK" />
+    <EntitySet Name="publishhouse" EntityType="BibFondModel.publishhouse" />
+    <EntitySet Name="sysdiagrams" EntityType="BibFondModel.sysdiagrams" />
+    <EntitySet Name="writing_Book" EntityType="BibFondModel.writing_Book" />
+    <AssociationSet Name="FK_Book_author1" Association="BibFondModel.FK_Book_author1">
+      <End Role="author" EntitySet="author" />
+      <End Role="Book" EntitySet="Book" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Book_GENRE1" Association="BibFondModel.FK_Book_GENRE1">
+      <End Role="GENRE" EntitySet="GENRE" />
+      <End Role="Book" EntitySet="Book" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Book_publishhouse1" Association="BibFondModel.FK_Book_publishhouse1">
+      <End Role="publishhouse" EntitySet="publishhouse" />
+      <End Role="Book" EntitySet="Book" />
+    </AssociationSet>
+    <AssociationSet Name="FK_list_OF_BOOK_Book1" Association="BibFondModel.FK_list_OF_BOOK_Book1">
+      <End Role="Book" EntitySet="Book" />
+      <End Role="list_OF_BOOK" EntitySet="list_OF_BOOK" />
+    </AssociationSet>
+    <AssociationSet Name="FK_writing_Book_Book1" Association="BibFondModel.FK_writing_Book_Book1">
+      <End Role="Book" EntitySet="Book" />
+      <End Role="writing_Book" EntitySet="writing_Book" />
+    </AssociationSet>
+    <AssociationSet Name="FK_data_USERS_list_OF_BOOK" Association="BibFondModel.FK_data_USERS_list_OF_BOOK">
+      <End Role="list_OF_BOOK" EntitySet="list_OF_BOOK" />
+      <End Role="data_USERS" EntitySet="data_USERS" />
+    </AssociationSet>
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="author">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="COUNTRY" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Book" Relationship="BibFondModel.FK_Book_author1" FromRole="author" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="Book">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="genre_ID" Type="Int32" />
+    <Property Name="date_PUBLICATION" Type="DateTime" Precision="0" />
+    <Property Name="duration_READING" Type="Int32" />
+    <Property Name="debt_PRICE" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="author_ID" Type="Int32" />
+    <Property Name="publishhouse_ID" Type="Int32" />
+    <Property Name="ImagePath" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="author" Relationship="BibFondModel.FK_Book_author1" FromRole="Book" ToRole="author" />
+    <NavigationProperty Name="GENRE" Relationship="BibFondModel.FK_Book_GENRE1" FromRole="Book" ToRole="GENRE" />
+    <NavigationProperty Name="publishhouse" Relationship="BibFondModel.FK_Book_publishhouse1" FromRole="Book" ToRole="publishhouse" />
+    <NavigationProperty Name="list_OF_BOOK" Relationship="BibFondModel.FK_list_OF_BOOK_Book1" FromRole="Book" ToRole="list_OF_BOOK" />
+    <NavigationProperty Name="writing_Book" Relationship="BibFondModel.FK_writing_Book_Book1" FromRole="Book" ToRole="writing_Book" />
+  </EntityType>
+  <EntityType Name="data_USERS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LOGIN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ADMIN" Type="Boolean" Nullable="false" />
+    <Property Name="FIO" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PHONE" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="date_BIRTH" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="list_OF_BOOK_ID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="list_OF_BOOK" Relationship="BibFondModel.FK_data_USERS_list_OF_BOOK" FromRole="data_USERS" ToRole="list_OF_BOOK" />
+  </EntityType>
+  <EntityType Name="GENRE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Book" Relationship="BibFondModel.FK_Book_GENRE1" FromRole="GENRE" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="ImageSource">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="format" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="list_OF_BOOK">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DEBT" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="date_DELIVERY" Type="DateTime" Precision="0" />
+    <Property Name="date_ISSUE" Type="DateTime" Precision="0" />
+    <Property Name="book_ID" Type="Int32" />
+    <NavigationProperty Name="Book" Relationship="BibFondModel.FK_list_OF_BOOK_Book1" FromRole="list_OF_BOOK" ToRole="Book" />
+    <NavigationProperty Name="data_USERS" Relationship="BibFondModel.FK_data_USERS_list_OF_BOOK" FromRole="list_OF_BOOK" ToRole="data_USERS" />
+  </EntityType>
+  <EntityType Name="publishhouse">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Book" Relationship="BibFondModel.FK_Book_publishhouse1" FromRole="publishhouse" ToRole="Book" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="writing_Book">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="book_ID" Type="Int32" />
+    <Property Name="book_STATUS" Type="Boolean" />
+    <Property Name="book_NUM" Type="Int32" />
+    <NavigationProperty Name="Book" Relationship="BibFondModel.FK_writing_Book_Book1" FromRole="writing_Book" ToRole="Book" />
+  </EntityType>
+  <Association Name="FK_Book_author1">
+    <End Type="BibFondModel.author" Role="author" Multiplicity="0..1" />
+    <End Type="BibFondModel.Book" Role="Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="author">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="author_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Book_GENRE1">
+    <End Type="BibFondModel.GENRE" Role="GENRE" Multiplicity="0..1" />
+    <End Type="BibFondModel.Book" Role="Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GENRE">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="genre_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Book_publishhouse1">
+    <End Type="BibFondModel.publishhouse" Role="publishhouse" Multiplicity="0..1" />
+    <End Type="BibFondModel.Book" Role="Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="publishhouse">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Book">
+        <PropertyRef Name="publishhouse_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_list_OF_BOOK_Book1">
+    <End Type="BibFondModel.Book" Role="Book" Multiplicity="0..1" />
+    <End Type="BibFondModel.list_OF_BOOK" Role="list_OF_BOOK" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="list_OF_BOOK">
+        <PropertyRef Name="book_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_writing_Book_Book1">
+    <End Type="BibFondModel.Book" Role="Book" Multiplicity="0..1" />
+    <End Type="BibFondModel.writing_Book" Role="writing_Book" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Book">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="writing_Book">
+        <PropertyRef Name="book_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_data_USERS_list_OF_BOOK">
+    <End Type="BibFondModel.list_OF_BOOK" Role="list_OF_BOOK" Multiplicity="1" />
+    <End Type="BibFondModel.data_USERS" Role="data_USERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="list_OF_BOOK">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="data_USERS">
+        <PropertyRef Name="list_OF_BOOK_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
